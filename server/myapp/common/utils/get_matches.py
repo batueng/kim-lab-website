@@ -1,4 +1,4 @@
-def is_point_in_box(point, box):
+def is_point_in_box(point, box, e):
     """
     Check if a point is inside a given box.
     
@@ -7,10 +7,10 @@ def is_point_in_box(point, box):
     :return: True if the point is inside the box, otherwise False
     """
     x, y = point
-    left, top, right, bottom = box
-    return left <= x <= right and top <= y <= bottom
+    left, bottom, right, top = box
+    return (left - e) <= x <= (right + e) and (bottom - e) <= y <= (top + e)
 
-def is_shape_in_box(shape, box):
+def is_shape_in_box(shape, box, e):
     """
     Check if all points of a shape are inside a given box.
     
@@ -18,5 +18,5 @@ def is_shape_in_box(shape, box):
     :param box: A tuple (left, top, right, bottom)
     :return: True if all points are inside the box, otherwise False
     """
-    return all(is_point_in_box(point, box) for point in shape)
+    return all(is_point_in_box(point, box, e) for point in shape)
 

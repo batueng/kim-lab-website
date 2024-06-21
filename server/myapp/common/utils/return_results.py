@@ -38,7 +38,6 @@ def return_results(filename, scale_value):
     inner_masks = inner_result[0].masks
     outer_masks = outer_result[0].masks
     outer_boxes = outer_result[0].boxes
-
     inner_shapes = []
     outer_shapes = []
     test = []
@@ -51,18 +50,16 @@ def return_results(filename, scale_value):
         if check_valid(mask.xy[0]):
             test.append((outer_boxes[i].xyxy[0], mask.xy[0]))
             outer_shapes.append(mask.xy[0])
-
     matches = []
     for outer_box, outer_shape in test:
         for inner_shape in inner_shapes:
-            if is_shape_in_box(inner_shape, outer_box):
+            if is_shape_in_box(inner_shape, outer_box, 0):
                 matches.append((inner_shape, outer_shape))
     """for outer in outer_shapes:
         for inner in inner_shapes:
             if check_match(inner, outer):
                 matches.append((inner, outer))
                 break"""
-
     results = []
     value_per_pixel = scale_value / 60
     i = 0
@@ -80,6 +77,7 @@ def return_results(filename, scale_value):
                 "outer_radii": calculate_axes(outer, value_per_pixel)
             })
             i += 1
+            print(calculate_axes(inner, value_per_pixel))
         except Exception as e:
             print(e)
     return new_filename, results

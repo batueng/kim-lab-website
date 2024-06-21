@@ -1,14 +1,12 @@
 import numpy as np
 from scipy.optimize import curve_fit
 
-
 def calculate_distance(point1, point2):
     """Calculate Euclidean distance between two points."""
     return np.linalg.norm(point2 - point1)
 
 def calculate_perimeter(coordinates):
     """Calculate the perimeter of a shape defined by coordinates."""
-
     # Convert the list of tuples to a NumPy array
     coordinates = np.array(coordinates)
 
@@ -19,7 +17,6 @@ def calculate_perimeter(coordinates):
         perimeter += calculate_distance(coordinates[i], coordinates[i+1])
     perimeter += calculate_distance(coordinates[-1], coordinates[0])  # Closing the shape
     return perimeter
-
 
 def ellipse_equation(xy, h, k, a, b, theta):
     """Equation for ellipses"""
@@ -47,9 +44,8 @@ def calculate_axes(coordinates, value_per_pixel):
     initial_guess = (h, k, a, b, theta)
 
     # Perform curve fitting
-    popt = curve_fit(ellipse_equation, (x_data, y_data), np.zeros_like(x_data), p0=initial_guess, maxfev=100000)[0]
+    popt, _ = curve_fit(ellipse_equation, (x_data, y_data), np.zeros_like(x_data), p0=initial_guess, maxfev=100000)
 
     # Extract parameters
     a, b = popt[2], popt[3]
-
-    return round(max(a, b) * value_per_pixel, 2), round(min(a, b) * value_per_pixel, 2)
+    return round(min(a, b) * value_per_pixel, 2), round(max(a, b) * value_per_pixel, 2)

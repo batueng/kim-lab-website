@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import styles from '../styles/Home.module.css';
 import Cell from './cell.js';
 
-function File({ fileData }) {
+function File({ fileData, index}) {
     const imageRef = useRef(null);
     const [boundingRect, setBoundingRect] = useState({ left: 0, top: 0 });
 
@@ -16,22 +16,28 @@ function File({ fileData }) {
 
     const imageURL = `http://127.0.0.1:8000/api/v1/files/${fileData.id}`;
     const results = fileData.results;
+    const imageContainerStyle = {
+        width: "640px",
+        height: "640px", /* Full height for demonstration, adjust as needed */
+        verticalAlign: "center",
+        backgroundImage: `url(${imageURL})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center'
+    }
     return (
-        <div id="image-container" className={styles.imageContainer}>
-            <img
-                src={imageURL}
-                alt="file"
-                ref={imageRef}
-                onLoad={handleImageLoad}
-                className={styles.image}
-            />
-            <div className={styles.overlay}>
+        <div style={{
+            display: "flex",
+            width: "100%",
+            height: "100%", /* Full height for demonstration, adjust as needed */
+            justifyContent: "center",
+            alignItems: "center"
+        }}>
+            <div id="image-container" style={imageContainerStyle} ref={imageRef} onLoad={handleImageLoad}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
+                        justifyContent: "center",
+                        alignItems: "center",
                         width: '100%',
                         height: '100%',
                         pointerEvents: 'visible'
@@ -42,7 +48,6 @@ function File({ fileData }) {
                     ))}
                 </svg>
             </div>
-            
         </div>
     );
 }

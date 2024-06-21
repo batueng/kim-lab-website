@@ -16,23 +16,37 @@ def index(request):
 @csrf_exempt
 def analyze(request):
     """Analyze file and return information."""
-    if request.method == 'POST' and request.FILES['file']:
-        scale = int(request.POST.get('scale'))
-        # Get the uploaded file
-        uploaded_file = request.FILES['file']
-        destination = f'common/tmp/{uploaded_file.name}'
-        with open(destination, 'wb+') as file:
-            for chunk in uploaded_file.chunks():
-                file.write(chunk)
+    if request.method == 'POST':
+        if 'file' not in request.FILES:
+            return JsonResponse({'error': 'No file provided'}, status=400)
+        
+        scale = request.POST.get('scale', None)
+        if scale is None:
+            return JsonResponse({'error': 'No scale provided'}, status=400)
+        
+        try:
+            scale = int(scale)
+        except ValueError:
+            return JsonResponse({'error': 'Scale must be an integer'}, status=400)
+        
+        uploaded_files = request.FILES.getlist('file')
+        response = []
+        
+        for uploaded_file in uploaded_files:
+            destination = f'common/tmp/{uploaded_file.name}'
+            with open(destination, 'wb+') as file:
+                for chunk in uploaded_file.chunks():
+                    file.write(chunk)
 
-        path, results = return_results(destination, 600)
-        f = File(path=path, num_cells=len(results), data=json.dumps(list(results)))
-        f.save()
-        id = File.objects.latest('id').id
+            path, results = return_results(destination, scale)
+            f = File(path=path, num_cells=len(results), data=json.dumps(list(results)))
+            f.save()
+            id = f.id
 
-        response = {"id": id, "results": results}
+            response.append({"id": id, "results": results})
     else:
         return HttpResponse("Please send a POST request with a file.")
+
     return HttpResponse(json.dumps(response))
 
 def image(request, file_id):
