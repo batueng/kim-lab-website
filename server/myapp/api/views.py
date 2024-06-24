@@ -30,6 +30,7 @@ def analyze(request):
             return JsonResponse({'error': 'Scale must be an integer'}, status=400)
         
         uploaded_files = request.FILES.getlist('file')
+        scale = int(request.POST.get('scale'))
         response = []
         
         for uploaded_file in uploaded_files:
@@ -37,13 +38,12 @@ def analyze(request):
             with open(destination, 'wb+') as file:
                 for chunk in uploaded_file.chunks():
                     file.write(chunk)
-
             path, results = return_results(destination, scale)
             f = File(path=path, num_cells=len(results), data=json.dumps(list(results)))
             f.save()
             id = f.id
 
-            response.append({"id": id, "results": results})
+            response.append({"id": id, "filename": uploaded_file.name,"results": results})
     else:
         return HttpResponse("Please send a POST request with a file.")
 

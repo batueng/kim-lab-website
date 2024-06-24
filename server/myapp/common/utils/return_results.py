@@ -77,7 +77,6 @@ def return_results(filename, scale_value):
                 "outer_radii": calculate_axes(outer, value_per_pixel)
             })
             i += 1
-            print(calculate_axes(inner, value_per_pixel))
         except Exception as e:
             print(e)
     return new_filename, results

@@ -1,8 +1,19 @@
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center children vertically */
+  align-items: center; /* Center children horizontally */
+  height: 100vh; /* Adjust the height as needed */
+}
+
 .centeredDropzone {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Adjust the height as needed */
+  /* Set height to auto to avoid stretching */
+  height: auto;
+  padding: 20px; /* Adjust padding as needed */
 }
 
 .dropzone {
@@ -34,10 +45,22 @@
   pointer-events: none; /* Ensure the overlay doesn't interfere with interactions */
 }
 
-#loading {
+.loading {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  color: white;
+}
+
+.scale {
+  text-align: center;
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.scale p {
+  color: white;
+  margin-right: 10px; /* Adjust spacing between elements */
 }

@@ -6,6 +6,7 @@ import Cell from './cell.js';
 function File({ fileData, index}) {
     const imageRef = useRef(null);
     const [boundingRect, setBoundingRect] = useState({ left: 0, top: 0 });
+    const [cellToggle, setCellToggle] = useState(false);
 
     const handleImageLoad = () => {
         if (imageRef.current) {
@@ -24,29 +25,47 @@ function File({ fileData, index}) {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center'
     }
+
+    const handleClick = () => {
+        setCellToggle(!cellToggle);
+    }
+
     return (
-        <div style={{
-            display: "flex",
-            width: "100%",
-            height: "100%", /* Full height for demonstration, adjust as needed */
-            justifyContent: "center",
-            alignItems: "center"
-        }}>
-            <div id="image-container" style={imageContainerStyle} ref={imageRef} onLoad={handleImageLoad}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: '100%',
-                        height: '100%',
-                        pointerEvents: 'visible'
-                    }}
-                >
-                    {results.map((result, index) => (
-                        <Cell key={index} cellData={result} x={boundingRect.left} y={boundingRect.top} />
-                    ))}
-                </svg>
+        <div>
+            <p style={{
+                color: "white"
+            }}>{fileData.filename}</p>
+            <div style={{
+                display: "flex",
+                width: "100%",
+                height: "100%", /* Full height for demonstration, adjust as needed */
+                justifyContent: "center",
+                alignItems: "center"
+            }}>
+                <button onClick={handleClick}>Toggle</button>
+                <div id="image-container" style={imageContainerStyle} ref={imageRef} onLoad={handleImageLoad}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: '100%',
+                            height: '100%',
+                            pointerEvents: 'visible'
+                        }}
+                    >
+                        {cellToggle ? (
+                            <>
+                                {results.map((result, index) => (
+                                    <Cell key={index} cellData={result} x={boundingRect.left} y={boundingRect.top} />
+                                ))}
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                        
+                    </svg>
+                </div>
             </div>
         </div>
     );
