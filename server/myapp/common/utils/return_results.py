@@ -63,22 +63,21 @@ def return_results(filename, scale_value):
     results = []
     value_per_pixel = scale_value / 60
     i = 0
+    print("Starting calculations for each cell")
     for inner, outer in matches:
-        try:
-            inner_perimeter = calculate_perimeter(inner)
-            outer_perimeter = calculate_perimeter(outer)
-            ratio = float(outer_perimeter) / inner_perimeter
-            results.append({
-                "id": i,
-                "ratio": round(ratio, 2),
-                "inner": inner.tolist(),
-                "outer": outer.tolist(),
-                "inner_radii": calculate_axes(inner, value_per_pixel),
-                "outer_radii": calculate_axes(outer, value_per_pixel)
-            })
-            i += 1
-        except Exception as e:
-            print(e)
+        inner_perimeter = calculate_perimeter(inner)
+        outer_perimeter = calculate_perimeter(outer)
+        ratio = float(outer_perimeter) / inner_perimeter
+        results.append({
+            "id": i,
+            "ratio": round(ratio, 2),
+            "inner": inner.tolist(),
+            "outer": outer.tolist(),
+            "inner_radii": calculate_axes(inner, value_per_pixel),
+            "outer_radii": calculate_axes(outer, value_per_pixel)
+        })
+        i += 1
+        print(i)
     return new_filename, results
     """except Exception as e:
         print(f"error at {filename}", e)"""

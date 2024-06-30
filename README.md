@@ -1,7 +1,7 @@
 # kim-lab-website
 
 ## Requirements:
-* Have Python with version > 3.10 installed
+* Have Python with version >= 3.10 installed
 * Have npm installed
 
 ## Installation:

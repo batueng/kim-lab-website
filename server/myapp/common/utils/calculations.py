@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy.spatial import ConvexHull
 
 def calculate_distance(point1, point2):
     """Calculate Euclidean distance between two points."""
