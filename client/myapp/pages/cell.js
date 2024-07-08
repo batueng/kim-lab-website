@@ -54,8 +54,8 @@ function Cell({ cellData, x, y }) {
             >
                 <h2>Cell Details</h2>
                 <p>Ratio: {cellData.ratio}</p>
-                <p>Inner diameter: [{cellData.inner_radii[0]}, {cellData.inner_radii[1]}]</p>
-                <p>Outer diameter: [{cellData.outer_radii[0]}, {cellData.outer_radii[1]}]</p>
+                <p>Inner diameter: {cellData.inner_diameter}</p>
+                <p>Outer diameter: {cellData.outer_diameter}</p>
                 <button onClick={closeModal}>Close</button>
             </Modal>
         </>
