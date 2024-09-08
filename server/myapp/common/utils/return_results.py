@@ -63,11 +63,16 @@ def return_results(filename, scale_value):
     results = []
     value_per_pixel = scale_value / 60
     i = 0
+
+    inner_sum = 0
+    outer_sum = 0
     for inner, outer in matches:
         inner_area = calculate_area(inner)
-        outer_area= calculate_area(outer)
+        outer_area = calculate_area(outer)
         inner_diameter = 2 * np.sqrt(inner_area/np.pi) * value_per_pixel
         outer_diameter = 2 * np.sqrt(outer_area/np.pi) * value_per_pixel
+        inner_sum += inner_diameter
+        outer_sum += outer_diameter
         ratio = outer_diameter / inner_diameter
         results.append({
             "id": i,
@@ -78,6 +83,6 @@ def return_results(filename, scale_value):
             "outer_diameter": round(outer_diameter, 2)
         })
         i += 1
-    return new_filename, results
+    return new_filename, results, inner_sum, outer_sum, i
     """except Exception as e:
         print(f"error at {filename}", e)"""

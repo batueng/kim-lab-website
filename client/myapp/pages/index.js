@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet';
 export default function Home() {
   const [upload, setUpload] = useState(true);
   const [fileData, setFileData] = useState([]);
+  const [averages, setAverages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
 
@@ -42,7 +43,8 @@ export default function Home() {
         return response.json();
       })
       .then(data => {
-        setFileData(data);
+        setFileData(data.files);
+        setAverages([data.whole_inner_average, data.whole_outer_average])
         console.log(data);
       })
       .catch(error => {
@@ -55,7 +57,9 @@ export default function Home() {
       <Head>
         <title>File Upload</title>
       </Head>
-      <div id="root"></div>
+      <div id="root" style={{
+        color: "white"
+      }}>
       {upload ? (
         <>
           <div className={styles.wrapper}>
@@ -65,7 +69,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.scale}>
-              <p>Scale:</p><input type="text" id="scaleInput" /><button onClick={handleClick}>Analyze!</button>
+              <p>Scale:</p><input type="text" id="scaleInput" /><input onClick={handleClick} type="button" value="Submit" />
             </div>
           </div>
         </>
@@ -75,14 +79,25 @@ export default function Home() {
             Loading...
           </div>
         ) : (
-          fileData.map((data, index) => (
-            <File key={index} fileData={data} index={index} />
-          ))
+          <>
+            <u><h1>Statistics of All Files</h1></u>
+            <p>
+              Inner average: { averages[0] } <br />
+              Outer average: { averages[1] } <br />
+            </p>
+            {fileData.map((data, index) => (
+              <File key={index} fileData={data} index={index} />
+            ))}
+            <a href="http://127.0.0.1:8000/api/v1/data_excel">
+              <h2>Download the data!</h2>
+            </a>
+          </>
         )
       )}
       <Helmet>
         <style>{'body { background-color: rgba(0, 39, 76, 1); }'}</style>
       </Helmet>
+      </div>
     </>
   );
 }
