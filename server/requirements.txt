@@ -4,3 +4,4 @@ django-cors-headers
 ultralytics
 numpy
 pandas
+openpyxl
