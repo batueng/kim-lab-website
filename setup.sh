@@ -1,12 +1,13 @@
 #!/bin/bash
 
 cd server
+mkdir myapp/common/tmp
+mkdir myapp/common/tmp/processed
 python3 -m venv env
 source env/bin/activate
 pip3 install -r requirements.txt
 cd myapp
 python3 manage.py migrate
-mkdir common/tmp/processed
 
 cd ../..
 
