@@ -44,7 +44,7 @@ export default function Home() {
       })
       .then(data => {
         setFileData(data.files);
-        setAverages([data.whole_inner_average, data.whole_outer_average])
+        setAverages([data.whole_inner_average, data.whole_outer_average, data.whole_ratio_average])
         console.log(data);
       })
       .catch(error => {
@@ -84,6 +84,7 @@ export default function Home() {
             <p>
               Inner average: { averages[0] } <br />
               Outer average: { averages[1] } <br />
+              Ratio average: { averages[2] } <br />
             </p>
             {fileData.map((data, index) => (
               <File key={index} fileData={data} index={index} />

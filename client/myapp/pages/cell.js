@@ -53,6 +53,7 @@ function Cell({ cellData, x, y }) {
                 }}
             >
                 <h2>Cell Details</h2>
+                <p>Id: {cellData.id}</p>
                 <p>Ratio: {cellData.ratio}</p>
                 <p>Inner diameter: {cellData.inner_diameter}</p>
                 <p>Outer diameter: {cellData.outer_diameter}</p>

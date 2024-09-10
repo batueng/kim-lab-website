@@ -73,7 +73,7 @@ def return_results(filename, scale_value):
         outer_diameter = 2 * np.sqrt(outer_area/np.pi) * value_per_pixel
         inner_sum += inner_diameter
         outer_sum += outer_diameter
-        ratio = outer_diameter / inner_diameter
+        ratio = inner_diameter / outer_diameter
         results.append({
             "id": i,
             "ratio": round(ratio, 2),

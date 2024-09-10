@@ -17,8 +17,6 @@ function File({ fileData, index}) {
 
     const imageURL = `http://127.0.0.1:8000/api/v1/files/${fileData.id}`;
     const results = fileData.results;
-    const inner_average = fileData.inner_average;
-    const outer_average = fileData.outer_average;
     const imageContainerStyle = {
         width: "640px",
         height: "640px", /* Full height for demonstration, adjust as needed */
@@ -38,6 +36,7 @@ function File({ fileData, index}) {
             <p>
                 Inner diameter average: {fileData.inner_average}<br />
                 Outer diameter average: {fileData.outer_average}<br />
+                Ratio average: {fileData.ratio_average}
             </p>
 
 

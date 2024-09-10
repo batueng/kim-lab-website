@@ -47,12 +47,15 @@ def analyze(request):
             f.save()
             id = f.id
 
+            inner_average = inner_sum / length
+            outer_average = outer_sum / length
             response.append({
                 "id": id,
                 "filename": uploaded_file.name,
                 "results": results,
-                "inner_average": round(inner_sum / length, 2),
-                "outer_average": round(outer_sum / length, 2)
+                "inner_average": round(inner_average, 2),
+                "outer_average": round(outer_average, 2),
+                "ratio_average": round(inner_average / outer_average, 2)
             })
             whole_length += length
             whole_inner_average += inner_sum
@@ -65,6 +68,7 @@ def analyze(request):
     d = {
         "whole_inner_average": round(whole_inner_average, 2),
         "whole_outer_average": round(whole_outer_average, 2),
+        "whole_ratio_average": round(whole_inner_average / whole_outer_average, 2),
         "files": response
     }
     to_excel(d, scale)
