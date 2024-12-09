@@ -4,7 +4,7 @@ import Modal from "react-modal";
 // Set the app element for accessibility
 Modal.setAppElement('#root');
 
-function Cell({ cellData, x, y }) {
+function Cell({ cellData, x, y, deleteCell }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const formatPoints = (points) => {
@@ -12,12 +12,16 @@ function Cell({ cellData, x, y }) {
     };
 
     const handlePolygonClick = () => {
-        console.log(cellData.id);
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const handleDeleteCell = () => {
+        deleteCell(cellData.id); // Call deleteCell from props
+        closeModal();
     };
 
     const innerPoints = formatPoints(cellData.inner);
@@ -29,12 +33,12 @@ function Cell({ cellData, x, y }) {
                 <polygon
                     points={outerPoints}
                     style={{ fill: 'darkred', stroke: 'black', strokeWidth: 2 }}
-                    onClick={handlePolygonClick} // Attach onClick event handler for outer polygon
+                    onClick={handlePolygonClick}
                 />
                 <polygon
                     points={innerPoints}
                     style={{ fill: 'red', stroke: 'black', strokeWidth: 2 }}
-                    onClick={handlePolygonClick} // Attach onClick event handler for inner polygon
+                    onClick={handlePolygonClick}
                 />
             </svg>
             <Modal
@@ -58,10 +62,10 @@ function Cell({ cellData, x, y }) {
                 <p>Inner diameter: {cellData.inner_diameter}</p>
                 <p>Outer diameter: {cellData.outer_diameter}</p>
                 <button onClick={closeModal}>Close</button>
+                <button onClick={handleDeleteCell}>Delete Cell</button>
             </Modal>
         </>
     );
 }
 
 export default Cell;
-

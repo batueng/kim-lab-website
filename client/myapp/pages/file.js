@@ -1,12 +1,12 @@
-// src/components/File.js
 import React, { useRef, useState } from "react";
 import styles from '../styles/Home.module.css';
 import Cell from './cell.js';
 
-function File({ fileData, index}) {
+function File({ fileData, index }) {
     const imageRef = useRef(null);
     const [boundingRect, setBoundingRect] = useState({ left: 0, top: 0 });
     const [cellToggle, setCellToggle] = useState(false);
+    const [cells, setCells] = useState(fileData.results); // Initialize state with results
 
     const handleImageLoad = () => {
         if (imageRef.current) {
@@ -16,10 +16,9 @@ function File({ fileData, index}) {
     };
 
     const imageURL = `http://127.0.0.1:8000/api/v1/files/${fileData.id}`;
-    const results = fileData.results;
     const imageContainerStyle = {
         width: "640px",
-        height: "640px", /* Full height for demonstration, adjust as needed */
+        height: "640px",
         verticalAlign: "center",
         backgroundImage: `url(${imageURL})`,
         backgroundRepeat: 'no-repeat',
@@ -28,7 +27,12 @@ function File({ fileData, index}) {
 
     const handleClick = () => {
         setCellToggle(!cellToggle);
-    }
+    };
+
+    // Function to delete a cell by id
+    const deleteCell = (id) => {
+        setCells((prevCells) => prevCells.filter(cell => cell.id !== id));
+    };
 
     return (
         <div>
@@ -39,11 +43,10 @@ function File({ fileData, index}) {
                 Ratio average: {fileData.ratio_average}
             </p>
 
-
             <div style={{
                 display: "flex",
                 width: "100%",
-                height: "100%", /* Full height for demonstration, adjust as needed */
+                height: "100%",
                 justifyContent: "center",
                 alignItems: "center"
             }}>
@@ -61,14 +64,17 @@ function File({ fileData, index}) {
                     >
                         {cellToggle ? (
                             <>
-                                {results.map((result, index) => (
-                                    <Cell key={index} cellData={result} x={boundingRect.left} y={boundingRect.top} />
+                                {cells.map((result, index) => (
+                                    <Cell
+                                        key={index}
+                                        cellData={result}
+                                        x={boundingRect.left}
+                                        y={boundingRect.top}
+                                        deleteCell={deleteCell} // Pass deleteCell function
+                                    />
                                 ))}
                             </>
-                        ) : (
-                            <></>
-                        )}
-                        
+                        ) : null}
                     </svg>
                 </div>
             </div>
