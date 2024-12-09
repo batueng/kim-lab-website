@@ -11,6 +11,19 @@ function Cell({ cellData, x, y, deleteCell }) {
         return points.map(point => `${point[0] + x},${point[1] + y}`).join(' ');
     };
 
+    const calculateCenter = (points) => {
+        const totalPoints = points.length;
+        const sum = points.reduce(
+            (acc, point) => {
+                acc.x += point[0];
+                acc.y += point[1];
+                return acc;
+            },
+            { x: 0, y: 0 }
+        );
+        return { x: sum.x / totalPoints + x, y: sum.y / totalPoints + y };
+    };
+
     const handlePolygonClick = () => {
         setIsModalOpen(true);
     };
@@ -20,12 +33,14 @@ function Cell({ cellData, x, y, deleteCell }) {
     };
 
     const handleDeleteCell = () => {
-        deleteCell(cellData.id); // Call deleteCell from props
+        deleteCell(cellData.id);
         closeModal();
     };
 
     const innerPoints = formatPoints(cellData.inner);
     const outerPoints = formatPoints(cellData.outer);
+
+    const center = calculateCenter(cellData.outer);
 
     return (
         <>
@@ -40,6 +55,18 @@ function Cell({ cellData, x, y, deleteCell }) {
                     style={{ fill: 'red', stroke: 'black', strokeWidth: 2 }}
                     onClick={handlePolygonClick}
                 />
+                {/* Add cell ID as a text element */}
+                <text
+                    x={center.x}
+                    y={center.y}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="12"
+                    fill="white"
+                    style={{ pointerEvents: 'none' }} // Ensure text doesn't block interactions
+                >
+                    {cellData.id}
+                </text>
             </svg>
             <Modal
                 isOpen={isModalOpen}
